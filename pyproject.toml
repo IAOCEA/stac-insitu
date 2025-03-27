@@ -1,16 +1,20 @@
 [project]
 name = "stac-insitu"
 requires-python = ">= 3.11"
-license = {text = "Apache-2.0"}
+license = { text = "Apache-2.0" }
+readme = "README.md"
 dependencies = [
-    "pystac",
-    "geopandas",
-    "movingpandas",
-    "pandas",
-    "shapely",
-    "toolz",
+  "pystac",
+  "geopandas",
+  "movingpandas",
+  "pandas",
+  "shapely",
+  "toolz",
 ]
 dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/IAOCEA/stac-insitu"
 
 [project.optional-dependencies]
 visualization = ["folium"]
@@ -25,9 +29,51 @@ packages = ["stac_insitu"]
 [tool.setuptools_scm]
 fallback_version = "9999"
 
-[tool.isort]
-profile = "black"
-skip_gitignore = true
-float_to_top = true
-default_section = "THIRDPARTY"
-known_first_party = "stac_insitu"
+[tool.ruff]
+target-version = "py310"
+builtins = ["ellipsis"]
+exclude = [
+  ".git",
+  ".eggs",
+  "build",
+  "dist",
+  "__pycache__",
+]
+line-length = 100
+
+[tool.ruff.lint]
+# E402: module level import not at top of file
+# E501: line too long - let black worry about that
+# E731: do not assign a lambda expression, use a def
+ignore = [
+  "E402",
+  "E501",
+  "E731",
+]
+select = [
+  "F",   # Pyflakes
+  "E",   # Pycodestyle
+  "I",   # isort
+  "UP",  # Pyupgrade
+  "TID", # flake8-tidy-imports
+  "W",
+]
+extend-safe-fixes = [
+  "TID252", # absolute imports
+]
+fixable = ["I", "TID252"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["stac_insitu"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
+
+[tool.coverage.run]
+source = ["xdggs"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING"]
