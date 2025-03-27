@@ -9,7 +9,7 @@ def glob_files(fs, glob, cache_dir):
 
     try:
         urls = cache_path.read_text().splitlines()
-    except IOError:
+    except OSError:
         urls = fs.glob(glob)
 
         cache_path.write_text("\n".join(urls))
